@@ -10,6 +10,8 @@ class EstudantesComponent extends Component
 {
     public $estudante_id, $nome, $email, $telefone, $estudante_delete_id;
 
+    public $view_estudante_id, $view_estudante_nome, $view_estudante_email, $view_estudante_telefone;
+
     public function updated($fields)
     {
         $this->validateOnly($fields, [
@@ -21,6 +23,7 @@ class EstudantesComponent extends Component
 
     public function store()
     {
+
         $this->validate([
             'estudante_id' => 'required|unique:estudantes',
             'nome' => 'required',
@@ -67,6 +70,7 @@ class EstudantesComponent extends Component
         $this->email = $estudante->email;
         $this->telefone = $estudante->telefone;
 
+
         $this->dispatchBrowserEvent('show-edit-estudante-modal');
     }
 
@@ -112,6 +116,26 @@ class EstudantesComponent extends Component
         $this->dispatchBrowserEvent('close-modal');
 
         $this->estudante_delete_id = '';
+    }
+
+    public function viewEstudanteInfo($id)
+    {
+        $estudante = Estudantes::where('id', $id)->first();
+
+        $this->view_estudante_id = $estudante->id;
+        $this->view_estudante_nome = $estudante->nome;
+        $this->view_estudante_email = $estudante->email;
+        $this->view_estudante_telefone = $estudante->telefone;
+
+        $this->dispatchBrowserEvent('show-view-estudante-modal');
+    }
+
+    function closeViewEstudanteModal()
+    {
+        $this->view_etudante_id = '';
+        $this->view_estudante_nome = '';
+        $this->view_estudante_email = '';
+        $this->view_estudante_telefone = '';
     }
 
     public function cancel()

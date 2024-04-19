@@ -35,7 +35,7 @@
                                         <td>{{ $estudante->email }}</td>
                                         <td>{{ $estudante->telefone }}</td>
                                         <td style="text-align: center;">
-                                            <button class="btn btn-sm btn-secondary">Ver</button>
+                                            <button class="btn btn-sm btn-secondary" wire:click="viewEstudanteInfo({{ $estudante->id }})">Ver</button>
                                             <button class="btn btn-sm btn-primary"
                                                     wire:click="edit({{ $estudante->id }})">Editar
                                             </button>
@@ -203,6 +203,41 @@
             </div>
         </div>
     </div>
+
+    <div wire:ignore.self class="modal fade" id="viewEstudanteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Informação Estudante</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="closeViewEstudanteModal"></button>
+                </div>
+                <div class="modal-body">
+                   <table class="table table bordered">
+                       <tbody>
+                       <tr>
+                           <th>ID: </th>
+                           <td>{{ $view_estudante_id }}</td>
+                       </tr>
+                       <tr>
+                           <th>Nome: </th>
+                           <td>{{ $view_estudante_nome }}</td>
+                       </tr>
+                       <tr>
+                           <th>Email: </th>
+                           <td>{{ $view_estudante_email }}</td>
+                       </tr>
+                       <tr>
+                           <th>Telefone: </th>
+                           <td>{{ $view_estudante_telefone }}</td>
+                       </tr>
+                       </tbody>
+                   </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')
@@ -210,10 +245,13 @@
         var addEstudanteModal = new bootstrap.Modal(document.getElementById('addEstudanteModal'));
         var editEstudanteModal = new bootstrap.Modal(document.getElementById('editEstudanteModal'));
         var deleteEstudanteModal = new bootstrap.Modal(document.getElementById('deleteEstudanteModal'));
+        var viewEstudanteModal = new bootstrap.Modal(document.getElementById('viewEstudanteModal'));
+
 
         var closeModalEvent = new Event('close-modal');
         var showEditEstudanteModalEvent = new Event('show-edit-estudante-modal');
         var showDeleteEstudanteModalEvent = new Event('show-delete-estudante-modal');
+        var showViewEstudanteModalEvent = new Event('show-view-estudante-modal')
 
         window.addEventListener('close-modal', function () {
             addEstudanteModal.hide();
@@ -227,12 +265,20 @@
             deleteEstudanteModal.hide();
         });
 
+        window.addEventListener('close-modal', function () {
+            viewEstudanteModal.hide();
+        });
+
         window.addEventListener('show-edit-estudante-modal', function () {
             editEstudanteModal.show();
         });
 
         window.addEventListener('show-delete-estudante-modal', function () {
             deleteEstudanteModal.show();
+        });
+
+        window.addEventListener('show-view-estudante-modal', function () {
+            viewEstudanteModal.show();
         });
     </script>
 @endpush
